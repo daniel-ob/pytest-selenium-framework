@@ -1,10 +1,9 @@
-from selenium import webdriver
+import pytest
 
 
+@pytest.mark.usefixtures("driver_init")
 class TestHome:
     def test_open_url(self):
-        driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver")
-        driver.get("http://automationpractice.com/index.php")
-        driver.maximize_window()
-        assert driver.title == "My Store"
-        driver.close()
+        self.driver.get("http://automationpractice.com/index.php")
+        self.driver.maximize_window()
+        assert self.driver.title == "My Store"
