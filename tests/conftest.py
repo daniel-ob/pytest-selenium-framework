@@ -5,7 +5,7 @@ import os
 
 
 @pytest.fixture(scope="class")
-def driver_init(request):
+def browser(request):
     driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver")
     driver.maximize_window()
     request.cls.driver = driver  # assign driver to class using the fixture

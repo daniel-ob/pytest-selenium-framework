@@ -1,22 +1,18 @@
 import pytest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.homepage import HomePage
 
 
-@pytest.mark.usefixtures("driver_init")
+@pytest.mark.usefixtures("browser")
 class TestHome:
     def test_open_url(self):
-        self.driver.get("http://automationpractice.com/index.php")
+        homepage = HomePage(self.driver)
+        homepage.load()
         assert self.driver.title == "My Store"
 
     def test_search(self):
-        wait = WebDriverWait(self.driver, 6)
+        homepage = HomePage(self.driver)
         search_text = "Dress"
-        self.driver.find_element(By.ID, "search_query_top").send_keys(search_text)
-        self.driver.find_element(By.CLASS_NAME, "button-search").click()
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product-listing")))
-        search_results = self.driver.find_elements(By.CSS_SELECTOR, "div[class='right-block'] .product-name")
+        search_results = homepage.search(search_text)
         for product in search_results:
             print(product.text)
             assert search_text in product.text
