@@ -1,3 +1,6 @@
+"""
+Fixtures into a separate file to share them between multiple test modules in the directory
+"""
 import pytest
 from selenium import webdriver
 from datetime import datetime
@@ -10,15 +13,11 @@ def browser(request):
     driver.maximize_window()
     request.cls.driver = driver  # assign driver to class using the fixture
     yield
+    # Teardown code after the yield
     driver.close()
 
 
-# Add URL and Screenshot (only on test fail) to pytest-html report.
-# Run tests from PytestSeleniumFramework folder with:
-# pytest --html=reports/report.html
-#
-# Based on from https://pytest-html.readthedocs.io/en/latest/user_guide.html
-# and https://github.com/pytest-dev/pytest-html/issues/186#issuecomment-441208344
+# Add URL and Screenshot (only on test fail) to pytest-html report
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     pytest_html = item.config.pluginmanager.getplugin("html")

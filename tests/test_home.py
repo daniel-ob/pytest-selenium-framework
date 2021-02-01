@@ -10,6 +10,7 @@ class TestHome:
         assert self.driver.title == "My Store"
 
     def test_search(self):
+        # Make a search and check that founded items matches that search
         homepage = HomePage(self.driver)
         search_text = "Dress"
         search_results = homepage.search(search_text)
