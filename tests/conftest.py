@@ -7,10 +7,17 @@ import os
 import pytest
 from selenium import webdriver
 
+CHROME_DRIVER_PATH = "/usr/local/bin/chromedriver"
+FIREFOX_DRIVER_PATH = "/usr/local/bin/geckodriver"
 
-@pytest.fixture(scope="class")
+
+@pytest.fixture(params=["chrome", "firefox"], scope="class")
+# @pytest.fixture(params=["chrome"], scope="class")
 def browser(request):
-    driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver")
+    if request.param == "chrome":
+        driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH)
+    if request.param == "firefox":
+        driver = webdriver.Firefox(executable_path=FIREFOX_DRIVER_PATH)
     driver.maximize_window()
     request.cls.driver = driver  # assign driver to class using the fixture
     yield
