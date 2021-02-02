@@ -1,10 +1,11 @@
 """
 Fixtures into a separate file to share them between multiple test modules in the directory
 """
-import pytest
-from selenium import webdriver
 from datetime import datetime
 import os
+
+import pytest
+from selenium import webdriver
 
 
 @pytest.fixture(scope="class")

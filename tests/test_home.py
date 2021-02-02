@@ -1,4 +1,5 @@
 import pytest
+
 from pages.homepage import HomePage
 from testdata.testdata import DataCollector
 
