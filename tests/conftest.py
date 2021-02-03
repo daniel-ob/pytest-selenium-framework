@@ -40,9 +40,12 @@ def pytest_runtest_makereport(item):
         xfail = hasattr(report, "wasxfail")
         if (report.skipped and xfail) or (report.failed and not xfail):
             # only add screenshot on failure
-            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             working_directory = os.getcwd()
-            image_file = working_directory+'/reports/screenshot_'+timestamp+'.png'
+            image_directory = working_directory + '/reports/img'  # using an absolute path
+            if not os.path.exists(image_directory):
+                os.makedirs(image_directory)
+            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            image_file = image_directory + '/screenshot_' + timestamp + '.png'
             driver.save_screenshot(image_file)
             extra.append(pytest_html.extras.image(image_file))
         report.extra = extra
