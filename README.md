@@ -2,25 +2,18 @@
 ## Install on virtual environment
 
 ```
-$ git clone https://github.com/daniel-ob/PytestSeleniumFramework.git
-$ cd PytestSeleniumFramework 
+$ git clone https://github.com/daniel-ob/pytest-selenium-framework.git
+$ cd pytest-selenium-framework
 $ python3 -m venv env
 $ source env/bin/activate
 (env)$ pip install -r requirements.txt
-(env)$ pip install -e .
 ```
 Then configure path to drivers in *tests/conftest.py*
 
-## Launch tests
-From PytestSeleniumFramework folder:
+## Run tests
 
-### All tests
 ```
-(env)$ pytest --html=reports/report.html
-```
-### Test subset
-```
-(env)$ pytest -k {substring_expression} --html=reports/report.html
+(env)$ python -m pytest --html=reports/report.html
 ```
 
 ## References
