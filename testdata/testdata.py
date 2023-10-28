@@ -8,7 +8,7 @@ class DataCollector:
     def get_test_data(self):
         try:
             test_data = []
-            with open(self.file, 'r') as csv_file:
+            with open(self.file, "r") as csv_file:
                 reader = csv.reader(csv_file)
                 # skips first row of file (header)
                 next(reader)
