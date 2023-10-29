@@ -1,10 +1,8 @@
 """
 Fixtures into a separate file to share them between multiple test modules in the directory
 """
-import os
-from datetime import datetime
-
 import pytest
+import pytest_html
 from selenium import webdriver
 
 
@@ -21,29 +19,18 @@ def browser(request):
     driver.close()
 
 
-# Add URL and Screenshot (only on test fail) to pytest-html report
 @pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item):
-    pytest_html = item.config.pluginmanager.getplugin("html")
+def pytest_runtest_makereport(item, call):
+    """Add URL and screenshot (only on Fail) to html report"""
     outcome = yield
     report = outcome.get_result()
-    extra = getattr(report, "extra", [])
+    extras = getattr(report, "extras", [])
     if report.when == "call":
-        # always add url to report
         request = item.funcargs["request"]
         driver = request.cls.driver
-        extra.append(pytest_html.extras.url(driver.current_url))
+        extras.append(pytest_html.extras.url(driver.current_url))
         xfail = hasattr(report, "wasxfail")
         if (report.skipped and xfail) or (report.failed and not xfail):
-            # only add screenshot on failure
-            working_directory = os.getcwd()
-            image_directory = (
-                working_directory + "/reports/img"
-            )  # using an absolute path
-            if not os.path.exists(image_directory):
-                os.makedirs(image_directory)
-            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            image_file = image_directory + "/screenshot_" + timestamp + ".png"
-            driver.save_screenshot(image_file)
-            extra.append(pytest_html.extras.image(image_file))
-        report.extra = extra
+            screenshot = driver.get_screenshot_as_base64()
+            extras.append(pytest_html.extras.image(screenshot, ""))
+        report.extras = extras
