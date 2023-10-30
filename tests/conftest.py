@@ -13,9 +13,9 @@ def browser(request):
     if request.param == "firefox":
         driver = webdriver.Firefox()
     driver.maximize_window()
-    request.cls.driver = driver  # assign driver to class using the fixture
+    request.cls.driver = driver
     yield
-    # Teardown code after the yield
+    # Teardown after the test
     driver.close()
 
 
